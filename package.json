@@ -1,0 +1,20 @@
+{
+  "name": "gardening-assistant",
+  "version": "1.0.0",
+  "description": "A web app that allows users to manage scheduling of their garden plants",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.0.1",
+    "express": "^5.1.0",
+    "joi": "^17.13.3",
+    "mongodb": "^6.17.0",
+    "mongoose": "^8.16.2"
+  }
+}
