@@ -12,6 +12,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 <body style="flex-direction: column;">
+    <div class="navbar">
+        <a class="active" href="myGarden">My Garden</a>
+        <a>Add Plants</a>
+        <a class="profile">Profile</a>
+    </div>
     <h1>Welcome, <%= user.name || user.email %>!</h1>
 
     <form action="/logout" method="GET">

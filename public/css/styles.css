@@ -33,3 +33,31 @@ caption{
   background-color: var(--Melon);
   color: var(--Brunswick-green);
 }
+
+.navbar{
+  background-color: var(--Brunswick-green);
+  color: var(--Baby-powder);
+  overflow: hidden;
+}
+
+.navbar a{
+  float: left;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.navbar a:hover{
+  background-color: var(--Tea-green);
+  color: var(--Brunswick-green);
+}
+
+
+.navbar a.active{
+  background-color: var(--Xanthous);
+  color: var(--Brunswick-green);
+}
+
+.navbar .profile{
+  float: right;
+}
