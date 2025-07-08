@@ -1,0 +1,25 @@
+:root {
+    --Melon: #FFA69E;
+    --Brunswick-green: #0F433B;
+    --Xanthous: #FFC759;
+    --Tea-green: #CCF3BA;
+    --Baby-powder: #fffffc;
+  }
+
+
+.login-register-form{
+  padding: 8px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  background-color: var(--Brunswick-green);
+  color: var(--Baby-powder);
+}
+
+body{
+  font-family: 'Roboto', 'sans-serif';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 95vh;
+}

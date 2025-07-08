@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
 const Joi = require('joi');
 
 const userSchema = new mongoose.Schema({
   name: String,
-  email: { type: String, unique: true, required: true },
-  password: String
+  email: { type: String, unique: true, required: true }
 });
+
+userSchema.plugin(passportLocalMongoose, { usernameField: 'email'});
+
+
+const User = mongoose.model('User', userSchema);
 
 function validateUser(user) {
   const schema = Joi.object({
@@ -16,6 +21,5 @@ function validateUser(user) {
   return schema.validate(user);
 }
 
-const User = mongoose.model('User', userSchema);
 
 module.exports = { User, validate: validateUser };
