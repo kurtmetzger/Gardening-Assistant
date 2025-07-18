@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>SWDV 640 Stylesheet</title>
+    <style>
+        :root {
+            --Melon: #FFA69E;
+            --Brunswick-green: #0F433B;
+            --Xanthous: #FFC759;
+            --Tea-green: #CCF3BA;
+            --Baby-powder: #fffffc;
+          }
+          
+        body {
+            background-color: var(--Baby-powder);
+            color: var(--Brunswick-green);
+            
+        }
+        
+        h1{
+            font-style: italic;
+            color: var(--Forest-Green);
+            font-size: 54px;
+            margin: 0px;
+        }
+        
+        h2{
+            background-color: var(--Xanthous);
+            color: var(--Brunswick-green);
+            padding: 4px;
+        }
+        
+        h3{
+            background-color: var(--Brunswick-green);
+            color: var(--Tea-green);
+            padding: 4px;
+        }
+        
+        .box-container{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .box-item{
+            text-align: center;
+        }
+        .box{
+            width: 100px;
+            height: 100px;
+            background-color: black;
+        }
+        
+        form{
+            background-color: var(--Brunswick-green);
+            color: var(--Baby-powder);
+            border-radius: 16px;
+            padding: 32px;
+            margin: 10px 10%;
+        }
+        
+        input[type=radio], input[type=checkbox]{
+            accent-color: var(--Xanthous);
+        }
+        
+        input[type=text]{
+            accent-color: var(--Xanthous);
+        }
+        
+        
+        button, input[type=submit]{
+            background-color: var(--Brunswick-green);
+            color: var(--Baby-powder);
+            border-radius: 16px;
+            padding: 8px 16px;;
+            font-size: 16px;
+            font-family: 'Lobster', sans-serif;
+            border-color: var(--Tea-green);
+        }
+        
+        .success{
+            background-color: var(--Tea-green);
+            color: var(--Rich-black);
+        }
+        
+        .warning{
+            background-color: var(--Xanthous);
+            color: var(--Brunswick-green)
+        }
+        
+        .error{
+            background-color: var(--Melon);
+            color: var(--Brunswick-green);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body style="font-family: 'Roboto', sans-serif">
+    <h1 style="font-family: 'Lobster', sans-serif">Gardening Assistant</h1>
+    <h2>I'm an h2 in the same bold green as the logo</h2>
+    <h3 >I'm h3! I'm only a little bit more important than text</h3>
+    <button>I'm a button!</button>
+    <p>I'm some basic text to show off what the standard font would look like. I'm using Roboto as my primary font, because it's a really basic and versatile sans-serif font. "Gardening Assistant" is my h1 heading and it uses the 'Lobster' font. Both fonts are sourced from Google Fonts.</p>
+    <p>My color palette consists of the following colors:</p>
+    <div class="box-container">
+        <div class="box-item">
+            <div class="box" style="background-color: #FFA69E"></div>
+            <p>Melon</p>
+        </div>
+        <div class="box-item">
+            <div class="box" style="background-color: #fffffc; border-style: solid; border-width: 1px"></div>
+            <p>Baby Powder</p>
+        </div>
+        <div class="box-item">
+            <div class="box" style="background-color: #FFC759"></div>
+            <p>Xanthous</p>
+        </div>
+        <div class="box-item">
+            <div class="box" style="background-color: #CCF3BA"></div>
+            <p>Tea Green</p>
+        </div>
+        <div class="box-item">
+            <div class="box" style="background-color: #0F433B"></div>
+            <p>Brunswick Green</p>
+        </div>
+    </div>
+    <form>
+        <label for="fname">First name:</label><br>
+        <input type="text" id="fname" name="fname"><br>
+        <label for="lname">Last name:</label><br>
+        <input type="text" id="lname" name="lname"><br>
+        <br>
+        <label for="checkboxes">This is how checkboxes would look. The accent color on these and the radio buttons should be the Yellow to stand out better</label>
+        <br>
+        <br>
+        <input type="checkbox" id="yes">
+        <label for="yes">Yes</label>
+        <input type="checkbox" id="yesAgain">
+        <label for="yesAgain">Yes again</label>
+        <br>
+        <br>
+        <label>Do you like radio buttons?</label><br>
+        <input type="radio" id="html" name="radio_example" value="HTML">
+        <label for="html">Yes</label><br>
+        <input type="radio" id="css" name="radio_example" value="CSS">
+        <label for="css">No</label><br>
+        <input type="radio" id="javascript" name="radio_example" value="JavaScript">
+        <label for="javascript">My website doesn't have a radio, what are you talking about?</label><br>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+    <p class="success">This is how a success would appear</p>
+    <p class="warning">This is how a warning would appear</p>
+    <p class="error">And finally, this is an error</p>
+</body>
+</html>
