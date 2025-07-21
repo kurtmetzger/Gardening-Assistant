@@ -17,7 +17,8 @@ router.post('/register', async (req, res) => {
     try {
         const newUser = new User({
             name: req.body.name,
-            email: req.body.email
+            email: req.body.email,
+            plantZone: '0'
         });
 
         const registeredUser = await User.register(newUser, req.body.password);

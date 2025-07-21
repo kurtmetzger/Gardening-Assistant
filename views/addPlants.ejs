@@ -1,11 +1,7 @@
-
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Register</title>
+  <title>Add Plants</title>
   <link rel="stylesheet" href="/css/styles.css" type="text/css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,30 +9,23 @@
 </head>
 <body style="flex-direction: column;">
     <div class="navbar">
-        <a class="active" href="/">My Garden</a>
-        <a href="/addPlants">Add Plants</a>
+        <a href="/">My Garden</a>
+        <a class="active" href="/addPlants">Add Plants</a>
         <a class="profile">Profile</a>
     </div>
-    <h1>Welcome, <%= user.name || user.email %>!</h1>
+    <h1>Showing plants for planting zone, <%= user.plantingZone %>!</h1>
 
     <form action="/logout" method="GET">
         <button type="submit">Logout</button>
     </form>
 
     <table>
-        <caption>Planted</caption>
+        <caption>Spring Plants</caption>
         <th>Name</th>
-        <th>Date Planted</th>
-        <th>Approx. Harvest Date</th>
-        <th>Delete</th>
-    </table>
-
-    <table>
-        <caption>Upcoming</caption>
-        <th>Name</th>
-        <th>Date Planted</th>
-        <th>Approx. Harvest Date</th>
-        <th>Delete</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Harevst Time</th>
+        <th>Add</th>
     </table>
     
 </body>

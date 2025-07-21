@@ -47,9 +47,37 @@ app.get('/', (req, res) => {
     res.render('myGarden', { user: req.user });
   });
 
+app.get('/addPlants', (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('login');
+  }
+  res.render('addPlants', { user: req.user });
+});
+
+//Adds planting zone to profile from zipcode. Zipcode is not saved
+router.post('/setZone', async (req, res) => {
+  const { zipcode } = req.body;
+  const userId = req.user._id;
+
+  const zipZone = await db.collection('zipzones').findOne({ zipcode });
+
+  if (zipZone) {
+    await db.collection('users').updateOne(
+      { _id: userId },
+      { $set: { zone: zipZone.zone} }
+    );
+    res.redirect('/addPlants');
+  } else {
+    
+    //Error message
+    res.redirect('/');
+  }
+});
+
 app.get('/login', (req, res) => {
     res.render('login');
 });
+
 
 const registerRoutes = require('./routes/register');
 app.use('/', registerRoutes);
