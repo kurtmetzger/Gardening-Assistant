@@ -55,23 +55,22 @@ app.get('/addPlants', (req, res) => {
 });
 
 //Adds planting zone to profile from zipcode. Zipcode is not saved
-router.post('/setZone', async (req, res) => {
-  const { zipcode } = req.body;
+app.post('/setZone', async (req, res) => {
+  const {zipcode} = req.body;
   const userId = req.user._id;
 
-  const zipZone = await db.collection('zipzones').findOne({ zipcode });
+  const zipZone = await db.collection('zipzones').findOne({zipcode});
 
   if (zipZone) {
     await db.collection('users').updateOne(
       { _id: userId },
-      { $set: { zone: zipZone.zone} }
+      { $set: { plantingZone: zipZone.zone} }
     );
-    res.redirect('/addPlants');
   } else {
-    
-    //Error message
-    res.redirect('/');
+    //Error message here
+    console.error('Error adding planting zone to user')
   }
+  res.redirect('/addPlants');
 });
 
 app.get('/login', (req, res) => {
