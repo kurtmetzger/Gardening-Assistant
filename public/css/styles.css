@@ -7,21 +7,29 @@
   }
 
 
+
+
 .login-register-form, table{
   padding: 8px;
   border-radius: 16px;
   width: 90%;
-  max-width: 400px;
   background-color: var(--Brunswick-green);
   color: var(--Baby-powder);
   justify-self: center;
   align-self: center;
 }
 
+.login-register-form{
+  max-width: 400px;
+}
+
+table{
+  max-width: 800px;
+}
+
 body{
   font-family: 'Roboto', 'sans-serif';
   display: flex;
-  height: 95vh;
   background-color: var(--Xanthous);
 }
 

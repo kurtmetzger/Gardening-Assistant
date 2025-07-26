@@ -7,6 +7,7 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const { User } = require('./models/user');
+const FullPlantingCalendar = require('./models/fullPlantingCalendar');
 const app = express();
 
 mongoose.connect(process.env.DATABASE_URL);
@@ -47,11 +48,28 @@ app.get('/', (req, res) => {
     res.render('myGarden', { user: req.user });
   });
 
-app.get('/addPlants', (req, res) => {
+app.get('/addPlants', async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.redirect('login');
   }
-  res.render('addPlants', { user: req.user });
+
+  try{
+    //gets the calendar info for user zone
+    const fullPlantingCalendar = await FullPlantingCalendar.findOne();
+    const fullPlantingData = fullPlantingCalendar.toObject();
+    const zone = req.user.plantingZone;
+
+    //formats today's date to compare to plant ranges
+    const date = new Date();
+    const formattedDate = `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+
+    const zoneData = fullPlantingData[zone];
+    res.render('addPlants', { user: req.user, plantingData: zoneData, dateToday: formattedDate });
+  } catch(err) {
+    console.error(err);
+    res.status(500).send('Error loading full planting dates in route');
+  }
 });
 
 //Adds planting zone to profile from zipcode. Zipcode is not saved
@@ -79,6 +97,7 @@ app.get('/login', (req, res) => {
 
 
 const registerRoutes = require('./routes/register');
+
 app.use('/', registerRoutes);
 
 app.post('/login', passport.authenticate('local', {
