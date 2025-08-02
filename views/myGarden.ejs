@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Register</title>
+  <title>My Garden</title>
   <link rel="stylesheet" href="/css/styles.css" type="text/css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,21 +23,41 @@
         <button type="submit">Logout</button>
     </form>
 
-    <table>
-        <caption>Planted</caption>
-        <th>Name</th>
-        <th>Date Planted</th>
-        <th>Approx. Harvest Date</th>
-        <th>Delete</th>
-    </table>
-
-    <table>
-        <caption>Upcoming</caption>
-        <th>Name</th>
-        <th>Date Planted</th>
-        <th>Approx. Harvest Date</th>
-        <th>Delete</th>
-    </table>
+    <% if (user.userGarden) { %>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Date Planted</th>
+              <th>Approx Harvest</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let i = 0; i < user.userGarden.length; i++) { 
+                const data = user.userGarden[i]; 
+                //Compares today's date to plant range to change bg color
+                %>
+              <tr>
+                <td><%= data.name %></td>
+                <td><%= data.datePlanted || "—" %></td>
+                <td><%= plantingData[data.name].maturityTime || "—" %></td>
+                <td>
+                    <form action="/removePlant" method="POST">
+                    <input type="hidden" name="name" value="<%= data.name %>">
+                    <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
+                    <button type="submit">Delete</button>
+                  </form></td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p>Please add plants to your garden</p>
+      <% } %>
+          
+      </body>
+      </html>
     
 </body>
 </html>

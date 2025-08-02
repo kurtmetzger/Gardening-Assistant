@@ -41,11 +41,48 @@ function isLoggedIn(req, res, next) {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.redirect('login');
     }
-    res.render('myGarden', { user: req.user });
+
+    try{
+      //gets the calendar info for user zone
+      const fullPlantingCalendar = await FullPlantingCalendar.findOne();
+      const fullPlantingData = fullPlantingCalendar.toObject();
+      const zone = req.user.plantingZone;
+  
+      //formats today's date to compare to plant ranges
+      const date = new Date();
+      const formattedDate = `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  
+  
+      const zoneData = fullPlantingData[zone];
+      res.render('myGarden', { user: req.user, plantingData: zoneData, dateToday: formattedDate });
+    } catch(err) {
+      console.error(err);
+      res.status(500).send('Error loading myGarden page');
+    }
+  });
+
+app.post('/removePlant', async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.redirect('login');
+    }
+  
+    const userId = req.user._id;
+    const {name, datePlanted} = req.body;
+  
+    try {
+      await db.collection('users').updateOne(
+        {_id: userId },
+        {$pull: {userGarden: {name, datePlanted}}}
+      );
+      res.redirect('/');
+    } catch (err) {
+      console.error('Error removing plant:', err);
+      res.status(500).send('Could not remove plant');
+    }
   });
 
 app.get('/addPlants', async (req, res) => {
@@ -69,6 +106,27 @@ app.get('/addPlants', async (req, res) => {
   } catch(err) {
     console.error(err);
     res.status(500).send('Error loading full planting dates in route');
+  }
+});
+
+
+app.post('/addToGarden', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('login');
+  }
+
+  const {name, datePlanted} = req.body;
+
+  try {
+    await db.collection('users').updateOne(
+      {_id: req.user._id},
+      {$push: {userGarden: {name, datePlanted}}}
+    );
+    console.log('Added plant to user garden')
+    res.redirect('/addPlants');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Could not add plant");
   }
 });
 

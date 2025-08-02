@@ -5,7 +5,13 @@ const Joi = require('joi');
 const userSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true, required: true },
-  plantingZone: String
+  plantingZone: String,
+  userGarden: [
+    {
+      name: String,
+      datePlanted: String
+    }
+  ]
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email'});
