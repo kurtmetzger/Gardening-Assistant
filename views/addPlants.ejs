@@ -74,9 +74,14 @@
           <td><%= data.maturityTime || "—" %></td>
           <td>
             <form action="/addToGarden" method="POST">
-              <input type="date" name="datePlanted" value="<%= new Date().toISOString().slice(0, 10) %>">
+              <input type="hidden" name="datePlanted" value="<%= new Date().toISOString().slice(0, 10) %>">
               <input type="hidden" name="name" value="<%= plant %>">
-              <button type="submit">Add Plant</button>
+              <button type="submit">Planted</button>
+            </form>
+            <form action="/addToUpcoming" method="POST">
+              <input type="hidden" name="datePlanted" value="0">
+              <input type="hidden" name="name" value="<%= plant %>">
+              <button type="submit">Upcoming</button>
             </form>
           </td>
         </tr>

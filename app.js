@@ -126,7 +126,47 @@ app.post('/addToGarden', async (req, res) => {
     res.redirect('/addPlants');
   } catch (err) {
     console.error(err);
-    res.status(500).send("Could not add plant");
+    res.status(500).send("Could not add plant to garden");
+  }
+});
+
+app.post('/addToUpcoming', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('login');
+  }
+
+  const {name, datePlanted} = req.body;
+
+  try {
+    await db.collection('users').updateOne(
+      {_id: req.user._id},
+      {$push: {userGarden: {name, datePlanted}}}
+    );
+    res.redirect('/addPlants');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Could not add plant to Upcoming");
+  }
+});
+
+app.post('/plantFromUpcoming', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('login');
+  }
+
+  const userId = req.user._id;
+  const {name} = req.body;
+  const today = new Date().toISOString().slice(0, 10);
+
+  try {
+    await db.collection('users').updateOne(
+      { _id: userId, 'userGarden.name': name, 'userGarden.datePlanted': "0" },
+      { $set: { 'userGarden.$.datePlanted': today } }
+    );
+    res.redirect('/');
+  } catch (err) {
+    console.error('Error updating plant date:', err);
+    res.status(500).send('Could not update plant date');
   }
 });
 

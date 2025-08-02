@@ -17,45 +17,90 @@
         <a href="/addPlants">Add Plants</a>
         <a class="profile">Profile</a>
     </div>
-    <h1>Welcome, <%= user.name || user.email %>!</h1>
+    <div style="display: flex; flex-direction:column; justify-content: center;align-items: center; margin: 0;">
+        <h1>Welcome, <%= user.name || user.email %>!</h1>
 
-    <form action="/logout" method="GET">
-        <button type="submit">Logout</button>
-    </form>
+        <form action="/logout" method="GET">
+            <button type="submit">Logout</button>
+        </form>
 
-    <% if (user.userGarden) { %>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Date Planted</th>
-              <th>Approx Harvest</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% for (let i = 0; i < user.userGarden.length; i++) { 
-                const data = user.userGarden[i]; 
-                //Compares today's date to plant range to change bg color
-                %>
-              <tr>
-                <td><%= data.name %></td>
-                <td><%= data.datePlanted || "—" %></td>
-                <td><%= plantingData[data.name].maturityTime || "—" %></td>
-                <td>
-                    <form action="/removePlant" method="POST">
-                    <input type="hidden" name="name" value="<%= data.name %>">
-                    <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
-                    <button type="submit">Delete</button>
-                  </form></td>
-              </tr>
+        <% if (user.userGarden) { %>
+            <h4>Planted</h4>
+            <table>
+            <thead>
+                <tr>
+                <th>Name</th>
+                <th>Date Planted</th>
+                <th>Approx Harvest</th>
+                <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < user.userGarden.length; i++) { 
+                    const data = user.userGarden[i]; 
+                    //Compares today's date to plant range to change bg color
+                    if (data.datePlanted !== "0") { 
+                    %>
+                <tr>
+                    <td><%= data.name %></td>
+                    <td><%= data.datePlanted || "—" %></td>
+                    <td><%= plantingData[data.name].maturityTime || "—" %></td>
+                    <td>
+                        <form action="/removePlant" method="POST">
+                        <input type="hidden" name="name" value="<%= data.name %>">
+                        <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
+                        <button type="submit">Delete</button>
+                    </form></td>
+                </tr>
+                <% }} %>
+            </tbody>
+            </table>
+        <% } else { %>
+            <p>Please add plants to your garden</p>
+        <% } %>
+
+        <% if (user.userGarden) { %>
+            
+            <table>
+                <h4>Upcoming</h4>
+            <thead>
+                <tr>
+                <th>Name</th>
+                <th>Approx Harvest Time</th>
+                <th>Plant!</th>
+                <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < user.userGarden.length; i++) { 
+                    const data = user.userGarden[i]; 
+                    //Compares today's date to plant range to change bg color
+                    if (data.datePlanted == "0") { 
+                    %>
+                <tr>
+                    <td><%= data.name %></td>
+                    <td><%= plantingData[data.name].maturityTime || "—" %></td>
+                    <td>
+                        <form action="/plantFromUpcoming" method="POST">
+                        <input type="hidden" name="name" value="<%= data.name %>">
+                        <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
+                        <button type="submit">Plant</button>
+                    </form>
+                    </td>
+                    <td>
+                        <form action="/removePlant" method="POST">
+                        <input type="hidden" name="name" value="<%= data.name %>">
+                        <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
+                        <button type="submit">Delete</button>
+                    </form>
+                    </td>
+                </tr>
+                <% }} %>
+            </tbody>
+            </table>
             <% } %>
-          </tbody>
-        </table>
-      <% } else { %>
-        <p>Please add plants to your garden</p>
-      <% } %>
-          
+    </div>
+    
       </body>
       </html>
     

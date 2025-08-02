@@ -17,6 +17,7 @@
   color: var(--Baby-powder);
   justify-self: center;
   align-self: center;
+  margin: 0 auto;
 }
 
 .login-register-form{
@@ -31,6 +32,8 @@ body{
   font-family: 'Roboto', 'sans-serif';
   display: flex;
   background-color: var(--Xanthous);
+  min-height: 100vh;
+  margin: 0; 
 }
 
 a {
