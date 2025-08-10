@@ -70,7 +70,7 @@
                     //Compares today's date to plant range to change bg color
                     if (data.datePlanted !== "0") { 
                     %>
-                <tr>
+                <tr style="<%= diffDays <= 0 ? 'background-color: #ccf3ba; color: black;' : '' %>">
                     <td><%= data.name %></td>
                     <td><%= plantedDateFormatted || "—" %></td>
                     <td>
