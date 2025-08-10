@@ -6,6 +6,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!--For comparing if today's date is in optimal planting range for a plant-->
   <%
@@ -30,7 +31,7 @@
             <button type="submit">Logout</button>
         </form>
 
-        <% if (user.userGarden) { %>
+        <% if (user.userGarden && user.userGarden.length !== 0) { %>
             <h4>Planted</h4>
             <table>
             <thead>
@@ -44,14 +45,42 @@
             <tbody>
                 <% for (let i = 0; i < user.userGarden.length; i++) { 
                     const data = user.userGarden[i]; 
+                    let diffDays = null;
+                    let maturityDate = null;
+                    let plantedDateFormatted = null;
+                    let maturityDateFormatted = null;
+
+                    /*Checks to see if plant has a maturity time value*/
+                    if (typeof plantingData[data.name].maturityTime === 'number'){
+                        const plantedDate = new Date(data.datePlanted)
+                        maturityDate = new Date(plantedDate)
+                        maturityDate.setDate(plantedDate.getDate() + plantingData[data.name].maturityTime);
+                        
+                        /*formats maturity date for display*/
+                        const options = { weekday: 'short', month: 'short', day: 'numeric' };
+                        maturityDateFormatted = maturityDate.toLocaleDateString('en-US', options);
+                        plantedDateFormatted = plantedDate.toLocaleDateString('en-US', options)
+
+                        const today = new Date()
+                        const diffTime = maturityDate - today;
+                        diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    }
+
+                    console.log(diffDays)
                     //Compares today's date to plant range to change bg color
                     if (data.datePlanted !== "0") { 
                     %>
                 <tr>
                     <td><%= data.name %></td>
-                    <td><%= data.datePlanted || "—" %></td>
-                    <td><%= plantingData[data.name].maturityTime || "—" %></td>
+                    <td><%= plantedDateFormatted || "—" %></td>
                     <td>
+                      <% if (diffDays > 0) { %>
+                        <p><strong><%= diffDays %></strong> day<%= diffDays === 1 ? '' : 's' %> until harvest on <%=maturityDateFormatted%></p>
+                      <% } else { %>
+                        <p>-</p>
+                      <% } %>
+                    </td>
+                      <td>
                         <form action="/removePlant" method="POST">
                         <input type="hidden" name="name" value="<%= data.name %>">
                         <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
@@ -62,10 +91,12 @@
             </tbody>
             </table>
         <% } else { %>
-            <p>Please add plants to your garden</p>
+            <div class="login-register-form">
+                <p>Please add plants to your garden on the "Add Plants" page</p>
+            </div>
         <% } %>
 
-        <% if (user.userGarden) { %>
+        <% if (user.userGarden && user.userGarden.length !== 0) { %>
             
             <table>
                 <h4>Upcoming</h4>
@@ -84,6 +115,7 @@
                     const inSpringRange = isDateInRange(dateToday, plantingData[data.name].plantOutdoorsStart, plantingData[data.name].plantOutdoorsEnd);
                     const inFallRange = isDateInRange(dateToday, plantingData[data.name].plantOutdoorsStartFall, plantingData[data.name].plantOutdoorsEndFall);
                     const inSeason = inSpringRange || inFallRange;
+
                     if (data.datePlanted == "0") { 
                     %>
                 <tr style="<%= inSeason ? 'background-color: #ccf3ba; color: black;' : '' %>">

@@ -18,14 +18,53 @@
   justify-self: center;
   align-self: center;
   margin: 0 auto;
+  font-size: 16px;
 }
 
 .login-register-form{
   max-width: 400px;
 }
 
+  /* Dropdown menu */
+  .dropdown-menu {
+    position: absolute;
+    top: 110%; /* just below button */
+    right: 0;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 160px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    display: none; /* hidden by default */
+    z-index: 1000;
+  }
+
+  /* Dropdown menu visible */
+  .dropdown-menu.show {
+    display: block;
+  }
+
+  /* Dropdown items */
+  .dropdown-menu a {
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #333;
+  }
+
+  .dropdown-menu a:hover {
+    background-color: #f1f1f1;
+  }
+
 table{
   max-width: 800px;
+  margin-bottom: 16px;
+}
+
+th, td {
+  border: 2px solid #0d302a;     /* Add border to all cells */              /* Some padding for readability */
+  text-align: left;
 }
 
 body{
@@ -71,4 +110,37 @@ caption{
 
 .navbar .profile{
   float: right;
+}
+
+button{
+  background-color: #CCF3BA;
+  border-radius: 16px;
+  margin: 8px;
+  padding: 8px;
+  font-family: 'Roboto', 'sans-serif';
+}
+
+/*mobile friendly changes*/
+@media (max-width: 600px) {
+  .login-register-form, table {
+    width: 95vw;         
+    font-size: 20px;      
+    padding: 12px;   
+    margin: 2px;     
+  }
+
+  .login-register-form{
+    max-width: 92vw;
+  }
+
+  table{
+    font-size: 12px;
+    table-layout: fixed;
+    word-wrap: break-word;
+    max-width: 98vw; 
+  };
+
+  button{
+    font-size: 12px;
+  }
 }
