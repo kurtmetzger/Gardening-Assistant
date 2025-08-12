@@ -16,6 +16,38 @@
     }
   %>
 
+  <!--Searchbar script-->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("searchbar").addEventListener("input", function() {
+        //Lowercase for easier matching
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll("#almanacTable tbody tr");
+        //Tracks how many matches there are
+        let rowCount = 0;
+    
+        rows.forEach(row => {
+            //Only compares the name
+            const firstCell = row.querySelector("td");
+            if (firstCell) {
+                //Also compares lowercase
+                const text = firstCell.textContent.toLowerCase();
+                //Hides row if doesn't contain match
+                if (text.includes(filter)) {
+                  row.style.display = "";
+                  rowCount++;
+                } else {
+                  row.style.display = "none";
+                }
+            }
+        });
+        if (rowCount === 0){
+          document.getElementById("noMatches").style.display = "";
+        }
+    });
+  });
+  </script>
+
 
 </head>
 <body style="flex-direction: column;">
@@ -29,9 +61,12 @@
         <button type="submit">Logout</button>
     </form>
 
+
+
 <% if (user.plantingZone !== "0") { %>
   <h1>Showing plants for planting zone, <%= user.plantingZone %>!</h1>
-  <table>
+  <input class="searchbar" type="text" id="searchbar" placeholder="Search..." />
+  <table id="almanacTable">
     <thead>
       <tr>
         <th>Plant</th>
@@ -63,16 +98,19 @@
             <form action="/addToGarden" method="POST">
               <input type="hidden" name="datePlanted" value="<%= new Date().toISOString().slice(0, 10) %>">
               <input type="hidden" name="name" value="<%= plant %>">
-              <button type="submit">Planted</button>
+              <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Planted</button>
             </form>
             <form action="/addToUpcoming" method="POST">
               <input type="hidden" name="datePlanted" value="0">
               <input type="hidden" name="name" value="<%= plant %>">
-              <button type="submit">Upcoming</button>
+              <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Upcoming</button>
             </form>
           </td>
         </tr>
       <% } %>
+      <tr id="noMatches" style="display: none;">
+        <td colspan="7" style="text-align:center; font-style: italic;">No matches found</td>
+      </tr>
     </tbody>
   </table>
 <% } else { %>

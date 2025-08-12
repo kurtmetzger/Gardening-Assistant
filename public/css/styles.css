@@ -25,9 +25,20 @@
   max-width: 400px;
 }
 
-table{
+.searchbar, table{
   max-width: 800px;
   margin-bottom: 16px;
+}
+
+.searchbar{
+  align-self: center;
+  width: 600px;
+  border-radius: 16px;
+  font-family: 'Roboto', 'sans-serif';
+  accent-color: var(--Xanthous);
+  padding: 8px;
+  border-width: 2px;
+  border-color: var(--Brunswick-green);
 }
 
 th, td {
@@ -87,6 +98,11 @@ button{
   margin: 8px;
   padding: 8px;
   font-family: 'Roboto', 'sans-serif';
+  border: 0px;
+}
+
+button:hover{
+  background-color: var(--Xanthous);
 }
 
 /*mobile friendly changes*/
@@ -102,7 +118,7 @@ button{
     max-width: 92vw;
   }
 
-  table{
+  .searchbar, table{
     font-size: 12px;
     table-layout: fixed;
     word-wrap: break-word;
