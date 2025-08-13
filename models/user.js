@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   plantingZone: String,
   userGarden: [
     {
+      id: {type: mongoose.Schema.Types.ObjectId},
       name: String,
       datePlanted: String
     }

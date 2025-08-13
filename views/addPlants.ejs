@@ -106,7 +106,7 @@
         </tr>
         <tr style="<%= inSeason ? 'background-color: #ccf3ba; color: black;' : '' %>;">
           <td colspan="6" class="addPlantsButtonsMobile" style="display:none; ">
-            <div style="display:flex; flex-direction:row; justify-content:center">
+            <div style="display:flex; flex-direction:row; justify-content:center;">
               <form action="/addToGarden" method="POST">
                 <input type="hidden" name="datePlanted" value="<%= new Date().toISOString().slice(0, 10) %>">
                 <input type="hidden" name="name" value="<%= plant %>">

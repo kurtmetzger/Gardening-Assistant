@@ -71,12 +71,12 @@ app.post('/removePlant', async (req, res) => {
     }
   
     const userId = req.user._id;
-    const {name, datePlanted} = req.body;
+    const {id} = req.body;
   
     try {
       await db.collection('users').updateOne(
-        {_id: userId },
-        {$pull: {userGarden: {name, datePlanted}}}
+        {_id: userId},
+        {$pull: {userGarden: {id: new ObjectId(id)}}}
       );
       res.redirect('/');
     } catch (err) {
@@ -116,11 +116,12 @@ app.post('/addToGarden', async (req, res) => {
   }
 
   const {name, datePlanted} = req.body;
+  const id = new ObjectId();
 
   try {
     await db.collection('users').updateOne(
       {_id: req.user._id},
-      {$push: {userGarden: {name, datePlanted}}}
+      {$push: {userGarden: {id, name, datePlanted}}}
     );
     console.log('Added plant to user garden')
     res.redirect('/addPlants');
@@ -136,11 +137,12 @@ app.post('/addToUpcoming', async (req, res) => {
   }
 
   const {name, datePlanted} = req.body;
+  const id = new ObjectId();
 
   try {
     await db.collection('users').updateOne(
       {_id: req.user._id},
-      {$push: {userGarden: {name, datePlanted}}}
+      {$push: {userGarden: {id, name, datePlanted}}}
     );
     res.redirect('/addPlants');
   } catch (err) {
@@ -155,12 +157,12 @@ app.post('/plantFromUpcoming', async (req, res) => {
   }
 
   const userId = req.user._id;
-  const {name} = req.body;
+  const {id} = req.body;
   const today = new Date().toISOString().slice(0, 10);
 
   try {
     await db.collection('users').updateOne(
-      { _id: userId, 'userGarden.name': name, 'userGarden.datePlanted': "0" },
+      { _id: userId, 'userGarden.id': new ObjectId(id), 'userGarden.datePlanted': "0" },
       { $set: { 'userGarden.$.datePlanted': today } }
     );
     res.redirect('/');
@@ -176,11 +178,11 @@ app.post('/updatePlantingDate', async (req, res) => {
   }
 
   const userId = req.user._id;
-  const {name, datePlanted} = req.body;
+  const {id, datePlanted} = req.body;
 
   try {
     await db.collection('users').updateOne(
-      { _id: userId, 'userGarden.name': name},
+      { _id: userId, 'userGarden.id': new ObjectId(id)},
       { $set: { 'userGarden.$.datePlanted': datePlanted } }
     );
     res.redirect('/');
@@ -215,6 +217,7 @@ app.get('/login', (req, res) => {
 
 
 const registerRoutes = require('./routes/register');
+const { ObjectId } = require('mongodb');
 
 app.use('/', registerRoutes);
 

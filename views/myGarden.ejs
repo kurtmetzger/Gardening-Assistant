@@ -69,26 +69,27 @@
                     //Compares today's date to plant range to change bg color
                     if (data.datePlanted !== "0") { 
                     %>
-                <tr style="<%= diffDays <= 0 ? 'background-color: #ccf3ba; color: black;' : '' %>">
+                <tr style="<%= diffDays <= 0 && diffDays !== null ? 'background-color: #FFC759; color: black;' : '' %>">
                     <td><%= data.name %></td>
                     <td>
                         <form action="/updatePlantingDate" method="POST">
-                            <input type="hidden" name="name" value="<%= data.name %>">
+                            <input type="hidden" name="id" value="<%= data.id %>">
                             <input type="date" name="datePlanted" value="<%=data.datePlanted%>">
                             <button type="submit">Update</button>
                         </form>
                     </td>
                     <td>
-                      <% if (diffDays > 0) { %>
+                      <% if (diffDays > 0 && diffDays !== null) { %>
                         <p><strong><%= diffDays %></strong> day<%= diffDays === 1 ? '' : 's' %> until harvest on <%=maturityDateFormatted%></p>
+                      <% } else if (diffDays !== null){ %>
+                        <p>Ready to harvest!</p>
                       <% } else { %>
                         <p>-</p>
                       <% } %>
                     </td>
                       <td>
                         <form action="/removePlant" method="POST">
-                        <input type="hidden" name="name" value="<%= data.name %>">
-                        <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
+                        <input type="hidden" name="id" value="<%= data.id %>">
                         <button type="submit">Delete</button>
                     </form></td>
                 </tr>
@@ -97,7 +98,7 @@
             </table>
         <% } else { %>
             <div class="login-register-form">
-                <p>Please add plants to your garden on the "Add Plants" page</p>
+                <p>Please add plants to your garden on the "<a href="/addPlants">Add Plants</a>" page</p>
             </div>
         <% } %>
 
@@ -128,14 +129,14 @@
                     <td><%= plantingData[data.name].maturityTime || "—" %></td>
                     <td>
                         <form action="/plantFromUpcoming" method="POST">
-                        <input type="hidden" name="name" value="<%= data.name %>">
+                        <input type="hidden" name="id" value="<%= data.id %>">
                         <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
                         <button type="submit">Plant</button>
                     </form>
                     </td>
                     <td>
                         <form action="/removePlant" method="POST">
-                        <input type="hidden" name="name" value="<%= data.name %>">
+                        <input type="hidden" name="id" value="<%= data.id %>">
                         <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
                         <button type="submit">Delete</button>
                     </form>
