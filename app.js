@@ -170,6 +170,26 @@ app.post('/plantFromUpcoming', async (req, res) => {
   }
 });
 
+app.post('/updatePlantingDate', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('login');
+  }
+
+  const userId = req.user._id;
+  const {name, datePlanted} = req.body;
+
+  try {
+    await db.collection('users').updateOne(
+      { _id: userId, 'userGarden.name': name},
+      { $set: { 'userGarden.$.datePlanted': datePlanted } }
+    );
+    res.redirect('/');
+  } catch (err) {
+    console.error('Error updating plant date:', err);
+    res.status(500).send('Could not update plant date');
+  }
+});
+
 //Adds planting zone to profile from zipcode. Zipcode is not saved
 app.post('/setZone', async (req, res) => {
   const {zipcode} = req.body;

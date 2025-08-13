@@ -57,14 +57,11 @@
         <a class="profile" id="profileButton">Profile</a>
     </div>
 
-    <form action="/logout" method="GET">
-        <button type="submit">Logout</button>
-    </form>
-
-
-
 <% if (user.plantingZone !== "0") { %>
-  <h1>Showing plants for planting zone, <%= user.plantingZone %>!</h1>
+  <div style="display: flex; flex-direction:column; justify-content: center;align-items: center; margin: 16px;">
+    <h1>Showing plants for planting zone, <%= user.plantingZone %>!</h1>
+  </div>
+  
   <input class="searchbar" type="text" id="searchbar" placeholder="Search..." />
   <table id="almanacTable">
     <thead>
@@ -75,7 +72,7 @@
         <th>Fall Start</th>
         <th>Fall End</th>
         <th>Days to Maturity</th>
-        <th>Add</th>
+        <th class="addPlantsButtonsDesktop">Add</th>
       </tr>
     </thead>
     <tbody>
@@ -94,7 +91,7 @@
           <td><%= data.plantOutdoorsStartFall || "—" %></td>
           <td><%= data.plantOutdoorsEndFall || "—" %></td>
           <td><%= data.maturityTime || "—" %></td>
-          <td style="display: flex; flex-direction:row; flex-wrap:wrap">
+          <td class="addPlantsButtonsDesktop" style="display: flex; flex-direction:row;">
             <form action="/addToGarden" method="POST">
               <input type="hidden" name="datePlanted" value="<%= new Date().toISOString().slice(0, 10) %>">
               <input type="hidden" name="name" value="<%= plant %>">
@@ -105,6 +102,22 @@
               <input type="hidden" name="name" value="<%= plant %>">
               <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Upcoming</button>
             </form>
+          </td>
+        </tr>
+        <tr style="<%= inSeason ? 'background-color: #ccf3ba; color: black;' : '' %>;">
+          <td colspan="6" class="addPlantsButtonsMobile" style="display:none; ">
+            <div style="display:flex; flex-direction:row; justify-content:center">
+              <form action="/addToGarden" method="POST">
+                <input type="hidden" name="datePlanted" value="<%= new Date().toISOString().slice(0, 10) %>">
+                <input type="hidden" name="name" value="<%= plant %>">
+                <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Planted</button>
+              </form>
+              <form action="/addToUpcoming" method="POST">
+                <input type="hidden" name="datePlanted" value="0">
+                <input type="hidden" name="name" value="<%= plant %>">
+                <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Upcoming</button>
+              </form>
+            </div>
           </td>
         </tr>
       <% } %>

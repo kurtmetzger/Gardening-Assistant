@@ -71,7 +71,13 @@
                     %>
                 <tr style="<%= diffDays <= 0 ? 'background-color: #ccf3ba; color: black;' : '' %>">
                     <td><%= data.name %></td>
-                    <td><%= plantedDateFormatted || "—" %></td>
+                    <td>
+                        <form action="/updatePlantingDate" method="POST">
+                            <input type="hidden" name="name" value="<%= data.name %>">
+                            <input type="date" name="datePlanted" value="<%=data.datePlanted%>">
+                            <button type="submit">Update</button>
+                        </form>
+                    </td>
                     <td>
                       <% if (diffDays > 0) { %>
                         <p><strong><%= diffDays %></strong> day<%= diffDays === 1 ? '' : 's' %> until harvest on <%=maturityDateFormatted%></p>

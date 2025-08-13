@@ -28,6 +28,7 @@
 .searchbar, table{
   max-width: 800px;
   margin-bottom: 16px;
+  margin: 16px;
 }
 
 .searchbar{
@@ -114,18 +115,33 @@ button:hover{
     margin: 2px;     
   }
 
+  .addPlantsButtonsDesktop{
+    display: none !important;
+  }
+
+  .addPlantsButtonsMobile{
+    display: table-cell !important;
+    width: max-content !important;
+    column-span: 6 !important;
+  }
+
   .login-register-form{
     max-width: 92vw;
   }
 
-  .searchbar, table{
-    font-size: 12px;
+  table{
+    font-size: 16px;
     table-layout: fixed;
     word-wrap: break-word;
     max-width: 98vw; 
   };
 
-  button{
+  .searchbar{
     font-size: 12px;
+    max-width: 80vw;
+  }
+
+  button{
+    font-size: 16px;
   }
 }
