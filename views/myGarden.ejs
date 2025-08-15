@@ -17,19 +17,48 @@
     }
   %>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const profileButton = document.getElementById('profileButton');
+      const dropdownMenu = document.getElementById('dropdownMenu');
+  
+      profileButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
+      });
+  
+      document.addEventListener('click', () => {
+        dropdownMenu.style.display = 'none';
+      });
+  
+      dropdownMenu.addEventListener('click', (event) => {
+        event.stopPropagation();
+      });
+    });
+  </script>
+  
+
+
 </head>
 <body style="flex-direction: column;">
     <div class="navbar">
         <a class="active" href="/">My Garden</a>
         <a href="/addPlants">Add Plants</a>
-        <a class="profile">Profile</a>
+        <div class="profile">
+            <button id="profileButton" style="width: auto; margin: 0px;">
+                Profile
+            </button>
+            <div id="dropdownMenu" class="dropdown-content">
+                <a>Settings</a>
+                <form action="/logout" method="GET">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+        
     </div>
     <div style="display: flex; flex-direction:column; justify-content: center;align-items: center; margin: 0;">
         <h1>Welcome, <%= user.name || user.email %>!</h1>
-
-        <form action="/logout" method="GET">
-            <button type="submit">Logout</button>
-        </form>
 
         <% if (user.userGarden && user.userGarden.length !== 0) { %>
             <h4>Planted</h4>
@@ -109,6 +138,8 @@
             <thead>
                 <tr>
                 <th>Name</th>
+                <th>Spring Planting Range</th>
+                <th>Fall Planting Range</th>
                 <th>Approx Harvest Time</th>
                 <th>Plant!</th>
                 <th>Delete</th>
@@ -126,19 +157,21 @@
                     %>
                 <tr style="<%= inSeason ? 'background-color: #ccf3ba; color: black;' : '' %>">
                     <td><%= data.name %></td>
+                    <td><%=plantingData[data.name].plantOutdoorsStart%> - <%=plantingData[data.name].plantOutdoorsEnd%></td>
+                    <td><%=plantingData[data.name].plantOutdoorsStartFall%> - <%=plantingData[data.name].plantOutdoorsEndFall%></td>
                     <td><%= plantingData[data.name].maturityTime || "—" %></td>
                     <td>
                         <form action="/plantFromUpcoming" method="POST">
                         <input type="hidden" name="id" value="<%= data.id %>">
                         <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
-                        <button type="submit">Plant</button>
+                        <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Plant</button>
                     </form>
                     </td>
                     <td>
                         <form action="/removePlant" method="POST">
                         <input type="hidden" name="id" value="<%= data.id %>">
                         <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
-                        <button type="submit">Delete</button>
+                        <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Delete</button>
                     </form>
                     </td>
                 </tr>

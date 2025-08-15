@@ -89,9 +89,28 @@ caption{
   color: var(--Brunswick-green);
 }
 
-.navbar .profile{
+.profile{
   float: right;
+  text-decoration: none;
+  font-size: 17px;
 }
+
+.profile button{
+  margin: 0px;
+  padding: 14px 16px;
+  font-size: 17px;
+  border-radius: 0px;
+  color: var(--Xanthous);
+  background-color: var(--Brunswick-green);
+}
+
+.profile > button:hover{
+  background-color: var(--Tea-green);
+  color: var(--Brunswick-green);
+}
+
+
+.profile:hover .dropdown-content {display: flex;}
 
 button{
   background-color: #CCF3BA;
@@ -100,10 +119,31 @@ button{
   padding: 8px;
   font-family: 'Roboto', 'sans-serif';
   border: 0px;
+  cursor:pointer;
 }
 
 button:hover{
   background-color: var(--Xanthous);
+}
+
+.dropdown-content{
+  position: absolute;
+  display: none;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  right: 0;
+  flex-direction: column;
+}
+
+.dropdown-content a, .dropdown-content button{
+  background-color: var(--Baby-powder);
+  color: black;
+  display: block;
+  width: 100%;
+}
+
+.dropdown-content a:hover, .dropdown-content button:hover{
+  background-color: var(--Xanthous) !important;
 }
 
 /*mobile friendly changes*/

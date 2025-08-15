@@ -45,17 +45,42 @@
           document.getElementById("noMatches").style.display = "";
         }
     });
+
+    const profileButton = document.getElementById('profileButton');
+      const dropdownMenu = document.getElementById('dropdownMenu');
+  
+      profileButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
+      });
+  
+      document.addEventListener('click', () => {
+        dropdownMenu.style.display = 'none';
+      });
+  
+      dropdownMenu.addEventListener('click', (event) => {
+        event.stopPropagation();
+      });
   });
   </script>
 
 
 </head>
 <body style="flex-direction: column;">
-    <div class="navbar">
-        <a href="/">My Garden</a>
-        <a class="active" href="/addPlants">Add Plants</a>
-        <a class="profile" id="profileButton">Profile</a>
-    </div>
+  <div class="navbar">
+  <a href="/">My Garden</a>
+  <a class="active" href="/addPlants">Add Plants</a>
+  <div class="profile">
+      <button id="profileButton" style="width: auto; margin: 0px;">
+          Profile
+      </button>
+      <div id="dropdownMenu" class="dropdown-content">
+          <a>Settings</a>
+          <a>Log Out</a>
+      </div>
+  </div>
+  
+</div>
 
 <% if (user.plantingZone !== "0") { %>
   <div style="display: flex; flex-direction:column; justify-content: center;align-items: center; margin: 16px;">
