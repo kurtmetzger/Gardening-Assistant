@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profile Options</title>
+  <link rel="stylesheet" href="/css/styles.css" type="text/css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const profileButton = document.getElementById('profileButton');
+      const dropdownMenu = document.getElementById('dropdownMenu');
+  
+      profileButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
+      });
+  
+      document.addEventListener('click', () => {
+        dropdownMenu.style.display = 'none';
+      });
+  
+      dropdownMenu.addEventListener('click', (event) => {
+        event.stopPropagation();
+      });
+  });
+  </script>
+
+
+</head>
+<body style="flex-direction: column;">
+  <div class="navbar">
+    <a href="/">My Garden</a>
+    <a href="/addPlants">Add Plants</a>
+    <div class="profile" >
+        <button id="profileButton" style="width: auto; margin: 0px;" class="active">
+            Profile
+        </button>
+        <div id="dropdownMenu" class="dropdown-content">
+            <a href="/profileOptions">Settings</a>
+            <form action="/logout" method="GET">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+    
+</div>
+
+<div style="display: flex; flex-direction:column; justify-content: center;align-items: center; margin: 0;">
+  <div class="login-register-form" style="margin: 32px;">
+    <form action="/setZone" method="POST">
+        <h1>Profile Options</h1>
+        <h3>Update Hardiness Zone</h3>
+        <p>Enter your new zipcode in the field below to update your planting calendar</p>
+        <p>Current Zone: <%= user.plantingZone %></p>
+        <input type="text" name="zipcode" class="form-control" placeholder="e.g. 60601" required pattern="\d{5}">
+        <button type="submit">Update Hardiness Zone</button>
+    </form>
+  </div>
+</div>
+    
+</body>
+</html>

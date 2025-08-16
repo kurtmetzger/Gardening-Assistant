@@ -68,24 +68,38 @@
 </head>
 <body style="flex-direction: column;">
   <div class="navbar">
-  <a href="/">My Garden</a>
-  <a class="active" href="/addPlants">Add Plants</a>
-  <div class="profile">
-      <button id="profileButton" style="width: auto; margin: 0px;">
-          Profile
-      </button>
-      <div id="dropdownMenu" class="dropdown-content">
-          <a>Settings</a>
-          <a>Log Out</a>
-      </div>
+    <a class="active" href="/">My Garden</a>
+    <a href="/addPlants">Add Plants</a>
+    <div class="profile">
+        <button id="profileButton" style="width: auto; margin: 0px;">
+            Profile
+        </button>
+        <div id="dropdownMenu" class="dropdown-content">
+            <a href="/profileOptions">Settings</a>
+            <form action="/logout" method="GET">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+    
   </div>
-  
-</div>
 
 <% if (user.plantingZone !== "0") { %>
   <div style="display: flex; flex-direction:column; justify-content: center;align-items: center; margin: 16px;">
     <h1>Showing plants for planting zone, <%= user.plantingZone %>!</h1>
+
+    <div style="display: flex; flex-direction:row; text-align: center;">
+      <p>All Plants</p>
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider round"></span>
+      </label>
+      <p>In Season</p>
+    </div>
+    
   </div>
+
+  
   
   <input class="searchbar" type="text" id="searchbar" placeholder="Search..." />
   <table id="almanacTable">
@@ -153,11 +167,11 @@
   </table>
 <% } else { %>
   <div class="login-register-form">
-        <form action="/setZone" method="POST" class="modal-content">
+        <form action="/setZone" method="POST">
             <h5>Enter Your ZIP Code</h5>
             <p>This lets us determine your Plant Hardiness zone. Only your zone, not your zipcode, is saved.</p>
             <input type="text" name="zipcode" class="form-control" placeholder="e.g. 60601" required pattern="\d{5}">
-            <button type="submit" class="btn btn-primary">Save ZIP Code</button>
+            <button type="submit">Enter ZIP Code</button>
         </form>
       </div>
 <% } %>

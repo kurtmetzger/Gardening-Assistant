@@ -109,6 +109,19 @@ app.get('/addPlants', async (req, res) => {
   }
 });
 
+app.get('/profileOptions', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('login');
+  }
+
+  try{
+    res.render('profileOptions', {user: req.user});
+  } catch(err) {
+    console.error(err);
+    res.status(500).send('Error loading profile options');
+  }
+});
+
 
 app.post('/addToGarden', async (req, res) => {
   if (!req.isAuthenticated()) {
@@ -200,15 +213,21 @@ app.post('/setZone', async (req, res) => {
   const zipZone = await db.collection('zipzones').findOne({zipcode});
 
   if (zipZone) {
-    await db.collection('users').updateOne(
-      { _id: userId },
-      { $set: { plantingZone: zipZone.zone} }
-    );
+    try{
+      await db.collection('users').updateOne(
+        { _id: userId },
+        { $set: { plantingZone: zipZone.zone} }
+      );
+    } catch(err){
+      console.error(err);
+      console.error('Error adding planting zone to user');
+    }
   } else {
-    //Error message here
-    console.error('Error adding planting zone to user')
+    console.error('Invalid zip code')
   }
-  res.redirect('/addPlants');
+  //Lets the page that makes the request refresh so it can be used from 'addPlants' or 'profileOptions'
+  const returnURL = req.get('referer') || '/';
+  res.redirect(returnURL);
 });
 
 app.get('/login', (req, res) => {
