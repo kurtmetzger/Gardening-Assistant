@@ -16,60 +16,81 @@
     }
   %>
 
-  <!--Searchbar script-->
+  
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("searchbar").addEventListener("input", function() {
-        //Lowercase for easier matching
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#almanacTable tbody tr");
-        //Tracks how many matches there are
-        let rowCount = 0;
-    
-        rows.forEach(row => {
-            //Only compares the name
-            const firstCell = row.querySelector("td");
-            if (firstCell) {
-                //Also compares lowercase
-                const text = firstCell.textContent.toLowerCase();
-                //Hides row if doesn't contain match
-                if (text.includes(filter)) {
-                  row.style.display = "";
-                  rowCount++;
-                } else {
-                  row.style.display = "none";
-                }
+  document.addEventListener("DOMContentLoaded", () => {
+    // Action starts on typing in textbox or in-season toggle
+    document.getElementById("searchbar").addEventListener("input", filterTable);
+    document.getElementById("inSeasonToggle").addEventListener("change", filterTable);
+
+    // Filters table via searchbar and in-season toggle
+    function filterTable() {
+      // Lowercase for easier matching
+      const filter = document.getElementById("searchbar").value.toLowerCase();
+      const inSeasonToggle = document.getElementById("inSeasonToggle").checked;
+      //Doesn't include hidden button rows in search
+      const rows = document.querySelectorAll("#almanacTable tbody tr.plantRow");
+
+      // Tracks how many matches there are
+      let rowCount = 0;
+
+      rows.forEach(row => {
+        // Only compares the name
+        const firstCell = row.querySelector("td");
+        const mobileRow = row.nextElementSibling;
+
+        if (firstCell) {
+          const text = firstCell.textContent.toLowerCase();
+          //Check if row is in-season
+          const inSeason = row.getAttribute("inSeason") === "true";
+
+          //Show row if matches search and looks if in-season toggle is on or off (either toggle isnt on, or is in season)
+          if (text.includes(filter) && (!inSeasonToggle || inSeason)) {
+            row.style.display = "";
+            //Makes mobile row unfiltered
+            if (mobileRow && mobileRow.classList.contains("mobileRow")) {
+              mobileRow.style.display = "";
             }
-        });
-        if (rowCount === 0){
-          document.getElementById("noMatches").style.display = "";
+            rowCount++;
+          } else {
+            row.style.display = "none";
+            if (mobileRow && mobileRow.classList.contains("mobileRow")) {
+              mobileRow.style.display = "none"; //hides mobile row
+          }
         }
+        }
+      });
+
+      // Shows text for when table is empty
+      document.getElementById("noMatches").style.display = rowCount === 0 ? "" : "none";
+    }
+
+    // Code for dropdown profile menu
+    const profileButton = document.getElementById('profileButton');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    profileButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
     });
 
-    const profileButton = document.getElementById('profileButton');
-      const dropdownMenu = document.getElementById('dropdownMenu');
-  
-      profileButton.addEventListener('click', (event) => {
-        event.stopPropagation();
-        dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
-      });
-  
-      document.addEventListener('click', () => {
-        dropdownMenu.style.display = 'none';
-      });
-  
-      dropdownMenu.addEventListener('click', (event) => {
-        event.stopPropagation();
-      });
+    document.addEventListener('click', () => {
+      dropdownMenu.style.display = 'none';
+    });
+
+    dropdownMenu.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
   });
-  </script>
+</script>
+
 
 
 </head>
 <body style="flex-direction: column;">
   <div class="navbar">
-    <a class="active" href="/">My Garden</a>
-    <a href="/addPlants">Add Plants</a>
+    <a href="/">My Garden</a>
+    <a class="active" href="/addPlants">Add Plants</a>
     <div class="profile">
         <button id="profileButton" style="width: auto; margin: 0px;">
             Profile
@@ -88,13 +109,13 @@
   <div style="display: flex; flex-direction:column; justify-content: center;align-items: center; margin: 16px;">
     <h1>Showing plants for planting zone, <%= user.plantingZone %>!</h1>
 
-    <div style="display: flex; flex-direction:row; text-align: center;">
-      <p>All Plants</p>
+    <div style="display: flex; flex-direction:row; text-align: center; align-items:center">
+      <p style="margin: 8px;">All Plants</p>
       <label class="switch">
-        <input type="checkbox">
+        <input type="checkbox" id="inSeasonToggle">
         <span class="slider round"></span>
       </label>
-      <p>In Season</p>
+      <p style="margin: 8px;">In Season</p>
     </div>
     
   </div>
@@ -123,7 +144,7 @@
           const inSeason = inSpringRange || inFallRange;
           %>
           
-        <tr style="<%= inSeason ? 'background-color: #ccf3ba; color: black;' : '' %>">
+        <tr class="plantRow" inSeason="<%=inSeason%>" style="<%= inSeason ? 'background-color: #ccf3ba; color: black;' : '' %>">
           <td><%= plant %></td>
           <td><%= data.plantOutdoorsStart || "—" %></td>
           <td><%= data.plantOutdoorsEnd || "—" %></td>
@@ -143,7 +164,7 @@
             </form>
           </td>
         </tr>
-        <tr style="<%= inSeason ? 'background-color: #ccf3ba; color: black;' : '' %>;">
+        <tr class="mobileRow" inSeason="<%=inSeason%>" style="<%= inSeason ? 'background-color: #ccf3ba; color: black;' : '' %>;">
           <td colspan="6" class="addPlantsButtonsMobile" style="display:none; ">
             <div style="display:flex; flex-direction:row; justify-content:center;">
               <form action="/addToGarden" method="POST">
