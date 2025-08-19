@@ -12,6 +12,10 @@
   
     
   <form action="/login" method="POST" class="login-register-form">
+    <!--Displays login error messages-->
+    <% if (typeof error !== 'undefined') { %>
+      <div style="background-color: #FFA69E; color: black;"><%= error %></div>
+    <% } %>
     <h1>Login</h1>
     <label>Email:</label>
     <input type="email" name="email" required/><br/>

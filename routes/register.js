@@ -8,11 +8,24 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-    const { error } = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    //Excludes password retype when trying to validate
+    const {error} = validate({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password
+    });
+    if (error) {
+        return res.render('register', {error: error.details[0].message});
+    }
+
+    if (req.body.password !== req.body.retypePassword) {
+        return res.render('register', {error: 'Passwords do not match'});
+    }
 
     let user = await User.findOne({ email: req.body.email });
-    if (user) return res.status(400).send('User already exists');
+    if (user) {
+        return res.render('register', {error: 'User already exists'});
+    }
 
     try {
         const newUser = new User({

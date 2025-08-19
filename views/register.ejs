@@ -11,6 +11,10 @@
 <body>
     
   <form action="/register" method="POST" class="login-register-form">
+    <!--Displays error messages when registering-->
+  <% if (typeof error !== 'undefined') { %>
+    <div style="background-color: #FFA69E; color: black;"><%= error %></div>
+  <% } %>
     <h1>Register</h1>
     <label>Name:</label>
     <input type="text" name="name" required/><br/>
@@ -18,6 +22,8 @@
     <input type="email" name="email" required/><br/>
     <label>Password:</label>
     <input type="password" name="password" required/><br/>
+    <label>Re-Type Password:</label>
+    <input type="password" name="retypePassword" required/><br/>
     <button type="submit">Register</button>
   </form>
   
