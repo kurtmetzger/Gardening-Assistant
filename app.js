@@ -246,6 +246,31 @@ app.get('/login', (req, res) => {
     res.render('login');
 });
 
+app.post("/tableSortUpdate", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect("/login");
+  }
+
+  const userId = req.user._id;
+  const { addPlantsSort, UpcomingSort } = req.body;
+
+  try {
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $set: {addPlantsSort: addPlantsSort || "name", upcomingSort: UpcomingSort || "name"
+        }
+      },
+      {new: true, upsert: true} //If setting doesn't exist in user, create it.
+    );
+
+    res.redirect("/profileOptions");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error saving sorting prefferences");
+  }
+});
+
 
 const registerRoutes = require('./routes/register');
 const { ObjectId } = require('mongodb');

@@ -10,9 +10,11 @@ const userSchema = new mongoose.Schema({
     {
       id: {type: mongoose.Schema.Types.ObjectId},
       name: String,
-      datePlanted: String
+      datePlanted: String,
     }
-  ]
+  ],
+  upcomingSort: String,
+  addPlantsSort: String
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email'});

@@ -21,6 +21,9 @@
   font-size: 16px;
 }
 
+input[type="radio"] {
+  accent-color: var(--Xanthous);
+}
 .faqBox p{
   text-indent: 15px;
 }

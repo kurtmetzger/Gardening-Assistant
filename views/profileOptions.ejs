@@ -58,6 +58,21 @@
         <input type="text" name="zipcode" class="form-control" placeholder="e.g. 60601" required pattern="\d{5}">
         <button type="submit">Update Hardiness Zone</button>
     </form>
+    <form action="/tableSortUpdate" method="POST">
+      <p>Sort plants on 'Add Plants' page by:</p>
+      <input type="radio" id="name" name="addPlantsSort" value="name" onchange="this.form.submit()" <%= user.addPlantsSort === 'name' ? 'checked' : '' %>>
+      <label for="name">Name (alphabetical)</label><br>
+      <input type="radio" id="date" name="addPlantsSort" value="date" onchange="this.form.submit()" <%= user.addPlantsSort === 'date' ? 'checked' : '' %>>
+      <label for="date">Date</label><br>
+    
+      <br>  
+    
+      <p>Sort plants in 'Upcoming' table by:</p>
+      <input type="radio" id="name" name="UpcomingSort" value="name" onchange="this.form.submit()" <%= user.upcomingSort === 'name' ? 'checked' : '' %>>
+      <label for="name">Name (alphabetical)</label><br>
+      <input type="radio" id="date" name="UpcomingSort" value="date" onchange="this.form.submit()" <%= user.upcomingSort === 'date' ? 'checked' : '' %>>
+      <label for="date">Date</label><br>
+    </form>
   </div>
 </div>
     

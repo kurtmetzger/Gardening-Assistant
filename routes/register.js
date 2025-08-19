@@ -31,7 +31,9 @@ router.post('/register', async (req, res) => {
         const newUser = new User({
             name: req.body.name,
             email: req.body.email,
-            plantingZone: "0"
+            plantingZone: "0",
+            upcomingSort: "name",
+            addPlantsSort: "name"
         });
 
         const registeredUser = await User.register(newUser, req.body.password);

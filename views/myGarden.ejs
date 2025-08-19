@@ -10,7 +10,33 @@
 
     <!--For comparing if today's date is in optimal planting range for a plant-->
   <%
-  function isDateInRange(today, start, end) {
+    //Same code as add plants page, but just grabs items where they are in upcoming
+  let upcomingArray = user.userGarden.filter(plant => plant.datePlanted === "0");
+
+  if (user.upcomingSort === 'date') {
+  //Redefines built in sort method logic by explaining how a and b should be compared.
+    upcomingArray.sort((a, b) => {
+      //Gets date from element a, then date from element b in sorting. Adds '-' if no data exists for spring planting
+      const aDate = plantingData[a.name].plantOutdoorsStart || "-";
+      const bDate = plantingData[b.name].plantOutdoorsStart || "-";
+      // Puts plants without spring planting dates (Garlic) at the bottom because negative results go later
+      if (aDate === "-") return 1;
+      if (bDate === "-") return -1;
+      //Seperates by month and day and converts into comparable numbers
+      const aMonth = Number(aDate.split("-")[0])
+      const aDay = Number(aDate.split("-")[1])
+      const bMonth = Number(bDate.split("-")[0])
+      const bDay = Number(bDate.split("-")[1])
+      //If months are different, return difference. Otherwise, return difference of days
+      if (aMonth !== bMonth) return aMonth - bMonth;
+      return aDay - bDay;
+    });
+  } else{
+    //This one needs to be sorted alphabetically, but the master plants list is automatically
+    upcomingArray.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+    function isDateInRange(today, start, end) {
     if (!start || !end) return false;
     return (start <= end && today >= start && today <= end) ||
            (start > end && (today >= start || today <= end));
@@ -147,14 +173,11 @@
                 </tr>
             </thead>
             <tbody>
-                <% for (let i = 0; i < user.userGarden.length; i++) { 
-                    const data = user.userGarden[i]; 
+                <% for (let data of upcomingArray) { 
                     //Compares today's date to plant range to change bg color
                     const inSpringRange = isDateInRange(dateToday, plantingData[data.name].plantOutdoorsStart, plantingData[data.name].plantOutdoorsEnd);
                     const inFallRange = isDateInRange(dateToday, plantingData[data.name].plantOutdoorsStartFall, plantingData[data.name].plantOutdoorsEndFall);
                     const inSeason = inSpringRange || inFallRange;
-
-                    if (data.datePlanted == "0") { 
                     %>
                 <tr style="<%= inSeason ? 'background-color: #ccf3ba; color: black;' : '' %>">
                     <td><%= data.name %></td>
@@ -163,20 +186,20 @@
                     <td><%= plantingData[data.name].maturityTime || "—" %></td>
                     <td>
                         <form action="/plantFromUpcoming" method="POST">
-                        <input type="hidden" name="id" value="<%= data.id %>">
+                        <input type="hidden" name="id" value="<%= data[0] %>">
                         <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
                         <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Plant</button>
                     </form>
                     </td>
                     <td>
                         <form action="/removePlant" method="POST">
-                        <input type="hidden" name="id" value="<%= data.id %>">
+                        <input type="hidden" name="id" value="<%= data[0] %>">
                         <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
                         <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Delete</button>
                     </form>
                     </td>
                 </tr>
-                <% }} %>
+                <% } %>
             </tbody>
             </table>
             <% } %>
