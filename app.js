@@ -122,6 +122,18 @@ app.get('/profileOptions', async (req, res) => {
   }
 });
 
+app.get('/FaQ', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('login');
+  }
+
+  try{
+    res.render('FaQ', {user: req.user});
+  } catch(err) {
+    console.error(err);
+    res.status(500).send('Error loading FaQ page');
+  }
+});
 
 app.post('/addToGarden', async (req, res) => {
   if (!req.isAuthenticated()) {

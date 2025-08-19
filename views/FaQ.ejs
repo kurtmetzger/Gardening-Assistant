@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FaQ</title>
+  <link rel="stylesheet" href="/css/styles.css" type="text/css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const profileButton = document.getElementById('profileButton');
+      const dropdownMenu = document.getElementById('dropdownMenu');
+  
+      profileButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
+      });
+  
+      document.addEventListener('click', () => {
+        dropdownMenu.style.display = 'none';
+      });
+  
+      dropdownMenu.addEventListener('click', (event) => {
+        event.stopPropagation();
+      });
+  });
+  </script>
+
+
+</head>
+<body style="flex-direction: column;">
+  <div class="navbar">
+    <a href="/">My Garden</a>
+    <a href="/addPlants">Add Plants</a>
+    <a class="active" href="/FaQ">FaQ</a>
+    <div class="profile" >
+        <button id="profileButton" style="width: auto; margin: 0px;">
+            Profile
+        </button>
+        <div id="dropdownMenu" class="dropdown-content">
+            <a href="/profileOptions">Settings</a>
+            <form action="/logout" method="GET">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+    
+</div>
+
+<div style="display: flex; flex-direction:column; justify-content: center;align-items: center; margin: 0;">
+  <div class="faqBox" style="margin: 32px;">
+    <h1>FaQ</h1>
+    <h3>What is this website?</h3>
+    <p>This website is a gardening assistant that takes the standard almanac tables from <a href="https://www.almanac.com/">almanac.com</a>
+    and adds special features that make the tables more useable, such as keeping track of harvesting dates on plants, or highlighting
+    in-season plants for better useability.
+    </p>
+    <h3>How do I use this application?</h3>
+    <p>The best place to start will be the <a href="addPlants">Add Plants</a> page where you will first be promted for your zipcode. We don't save your
+    zipcode, but we need it to assign your "Plant Hardiness Zone" which are defined areas of the United States with similiar climate conditions. 
+    Doing this allows for the optimal planting dates to adjust to your location.
+    </p>
+    <p>After having your zone assigned, you will be shown a table of all the vegetables in our database, as well as their optimal planting dates. Some, 
+      but not all will have two ranges, because some plants can be planted once in the spring, and once in the fall.
+    </p>
+    <p>Each plant will have two buttons: 'Planted', or 'Upcoming'. The 'Planted' button adds a plant to your garden in the <a href="/">My Garden</a> page, and
+    starts keeping track of when the best time to harvest it is. If you press the 'Upcoming' button, it will add it to your 'Upcoming' table on the <a href="/">My Garden</a> page,
+    and will continue to show the optimal planting date ranges for your region. Once the plant is in season, it will become highlighted until you press the 'Planted'
+    button and move it into your garden. 
+    </p>
+    <h3>Are there ways to make it easier to find what I want to plant?</h3>
+    <p>Yes! On the <a href="addPlants">Add Plants</a> page, we have included, not only a searchbar, but a toggle that filters out plants that are not currently in season.
+    This filter lets you see at a glance what plants would have success if you put them in your garden today!</p>
+    <h3>What if I planted something on a different day than today?</h3>
+    <p>Once you add a plant to your garden, you can simply change the date by using it's date picker to the desired date, then pressing the 
+      'Update' button. Your harvesting dates will update accordingly. 
+    </p>
+    <h3>How come only some plants have an optimal harvest time?</h3>
+    <p>Garden plants come in several varieties, and some are more predictable than others. For example, some pepper plants can produce from when they first flower,
+      in late May for example, all the way until the first frost in the fall! Beets on the other hand, grow once, and are harvested only once, because you remove the whole plant,
+      so it's more important, and more specific when they are harvested. For the other plants, it's more important to watch for cues in its condition, rather than the timeframe.
+    </p>
+    <h3>If I move, how do I change my planting zone?</h3>
+    <p>Your planting zone can be changed from the <a href="profileOptions">Profile Settings</a> menu by entering your new zipcode</p>
+  </div>
+</div>
+    
+</body>
+</html>

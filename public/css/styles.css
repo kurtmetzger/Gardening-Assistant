@@ -9,7 +9,7 @@
 
 
 
-.login-register-form, table{
+.login-register-form, table, .faqBox{
   padding: 8px;
   border-radius: 16px;
   width: 90%;
@@ -21,11 +21,15 @@
   font-size: 16px;
 }
 
+.faqBox p{
+  text-indent: 15px;
+}
+
 .login-register-form{
   max-width: 400px;
 }
 
-.searchbar, table{
+.searchbar, table, .faqBox{
   max-width: 800px;
   margin-bottom: 16px;
   margin: 16px;
