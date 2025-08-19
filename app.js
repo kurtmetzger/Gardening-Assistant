@@ -80,6 +80,7 @@ app.post('/removePlant', async (req, res) => {
       );
       res.redirect('/');
     } catch (err) {
+      console.log(id)
       console.error('Error removing plant:', err);
       res.status(500).send('Could not remove plant');
     }
@@ -95,6 +96,8 @@ app.get('/addPlants', async (req, res) => {
     const fullPlantingCalendar = await FullPlantingCalendar.findOne();
     const fullPlantingData = fullPlantingCalendar.toObject();
     const zone = req.user.plantingZone;
+    const addedUpcoming = req.query.addedUpcoming;
+    const addedPlanted = req.query.addedPlanted;
 
     //formats today's date to compare to plant ranges
     const date = new Date();
@@ -102,7 +105,7 @@ app.get('/addPlants', async (req, res) => {
 
 
     const zoneData = fullPlantingData[zone];
-    res.render('addPlants', { user: req.user, plantingData: zoneData, dateToday: formattedDate });
+    res.render('addPlants', { user: req.user, plantingData: zoneData, dateToday: formattedDate, addedUpcoming: addedUpcoming, addedPlanted: addedPlanted });
   } catch(err) {
     console.error(err);
     res.status(500).send('Error loading full planting dates in route');
@@ -149,7 +152,7 @@ app.post('/addToGarden', async (req, res) => {
       {$push: {userGarden: {id, name, datePlanted}}}
     );
     console.log('Added plant to user garden')
-    res.redirect('/addPlants');
+    res.redirect(`/addPlants?addedPlanted=${encodeURIComponent(name)}`);
   } catch (err) {
     console.error(err);
     res.status(500).send("Could not add plant to garden");
@@ -169,7 +172,8 @@ app.post('/addToUpcoming', async (req, res) => {
       {_id: req.user._id},
       {$push: {userGarden: {id, name, datePlanted}}}
     );
-    res.redirect('/addPlants');
+    //Send plant name to page to display on success
+    res.redirect(`/addPlants?addedUpcoming=${encodeURIComponent(name)}`);
   } catch (err) {
     console.error(err);
     res.status(500).send("Could not add plant to Upcoming");

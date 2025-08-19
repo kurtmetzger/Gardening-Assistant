@@ -186,14 +186,14 @@
                     <td><%= plantingData[data.name].maturityTime || "—" %></td>
                     <td>
                         <form action="/plantFromUpcoming" method="POST">
-                        <input type="hidden" name="id" value="<%= data[0] %>">
+                        <input type="hidden" name="id" value="<%= data.id %>">
                         <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
                         <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Plant</button>
                     </form>
                     </td>
                     <td>
                         <form action="/removePlant" method="POST">
-                        <input type="hidden" name="id" value="<%= data[0] %>">
+                        <input type="hidden" name="id" value="<%= data.id %>">
                         <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
                         <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Delete</button>
                     </form>

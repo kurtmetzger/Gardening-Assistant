@@ -14,9 +14,8 @@
     return (start <= end && today >= start && today <= end) ||
            (start > end && (today >= start || today <= end));
     }
-    
   //Converts into array for sorting
-  let plantArray = Object.entries(plantingData);
+  let plantArray = Object.entries(plantingData || {});
 
   if (user.addPlantsSort === 'date') {
   //Redefines built in sort method logic by explaining how a and b should be compared.
@@ -130,7 +129,7 @@
     
   </div>
 
-<% if (user.plantingZone !== "0") { %>
+<% if (user.plantingZone !== "0" && Object.keys(plantArray).length > 0) { %>
   <div style="display: flex; flex-direction:column; justify-content: center;align-items: center; margin: 16px;">
     <h1>Showing plants for planting zone, <%= user.plantingZone %>!</h1>
 
@@ -145,7 +144,16 @@
     
   </div>
 
-  
+  <% if (typeof addedUpcoming !== 'undefined') { %>
+    <div class="notification" style="background-color: #FFC759; padding: 8px; margin: auto; text-align:center; max-width:fit-content; border-radius: 16px;">
+      <%= addedUpcoming %> added to Upcoming!
+    </div>
+  <% } %>
+  <% if (typeof addedPlanted !== 'undefined') { %>
+    <div class="notification" style="background-color: #FFC759; padding: 8px; margin: auto; text-align:center; max-width:fit-content; border-radius: 16px;">
+      <%= addedPlanted %> added to garden!
+    </div>
+  <% } %>
   
   <input class="searchbar" type="text" id="searchbar" placeholder="Search..." />
   <table id="almanacTable">
@@ -161,6 +169,7 @@
       </tr>
     </thead>
     <tbody>
+      
       <% //Splits the organized array into two elements, the name, and the data inside
         for (let [plant, data] of plantArray) { 
           //Compares today's date to plant range to change bg color
@@ -212,9 +221,9 @@
     </tbody>
   </table>
 <% } else { %>
-  <div class="login-register-form">
+  <div class="login-register-form" style="margin-top: 32px;">
         <form action="/setZone" method="POST">
-            <h5>Enter Your ZIP Code</h5>
+            <h3>Enter Your ZIP Code</h3>
             <p>This lets us determine your Plant Hardiness zone. Only your zone, not your zipcode, is saved.</p>
             <input type="text" name="zipcode" class="form-control" placeholder="e.g. 60601" required pattern="\d{5}">
             <button type="submit">Enter ZIP Code</button>
