@@ -249,7 +249,8 @@ input:checked + .slider:before {
 
   .searchbar{
     font-size: 12px;
-    max-width: 70vw;
+    max-width: 60vw;
+    width: 60vw;
   }
 
   button{
