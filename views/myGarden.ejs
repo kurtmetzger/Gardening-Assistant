@@ -168,8 +168,8 @@
                 <th>Spring Planting Range</th>
                 <th>Fall Planting Range</th>
                 <th>Approx Harvest Time</th>
-                <th>Plant!</th>
-                <th>Delete</th>
+                <th class="addPlantsButtonsDesktop">Plant!</th>
+                <th class="addPlantsButtonsDesktop">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -184,20 +184,36 @@
                     <td><%=plantingData[data.name].plantOutdoorsStart%> - <%=plantingData[data.name].plantOutdoorsEnd%></td>
                     <td><%=plantingData[data.name].plantOutdoorsStartFall%> - <%=plantingData[data.name].plantOutdoorsEndFall%></td>
                     <td><%= plantingData[data.name].maturityTime || "—" %></td>
-                    <td>
+                    <td class="addPlantsButtonsDesktop" style="display: flex; flex-direction:row;">
                         <form action="/plantFromUpcoming" method="POST">
                         <input type="hidden" name="id" value="<%= data.id %>">
                         <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
                         <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Plant</button>
                     </form>
                     </td>
-                    <td>
+                    <td class="addPlantsButtonsDesktop" style="display: flex; flex-direction:row;">
                         <form action="/removePlant" method="POST">
                         <input type="hidden" name="id" value="<%= data.id %>">
                         <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
                         <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Delete</button>
                     </form>
                     </td>
+                </tr>
+                <tr class="mobileRow" inSeason="<%=inSeason%>" style="<%= inSeason ? 'background-color: #ccf3ba; color: black;' : '' %>;">
+                  <td colspan="4" class="addPlantsButtonsMobile" style="display:none; ">
+                    <div style="display:flex; flex-direction:row; justify-content:center;">
+                      <form action="/plantFromUpcoming" method="POST">
+                        <input type="hidden" name="id" value="<%= data.id %>">
+                        <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
+                        <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Plant</button>
+                    </form>
+                      <form action="/removePlant" method="POST">
+                        <input type="hidden" name="id" value="<%= data.id %>">
+                        <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
+                        <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Delete</button>
+                    </form>
+                    </div>
+                  </td>
                 </tr>
                 <% } %>
             </tbody>
