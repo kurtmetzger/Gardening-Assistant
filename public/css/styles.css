@@ -250,7 +250,7 @@ input:checked + .slider:before {
   .searchbar{
     font-size: 12px;
     max-width: 60vw;
-    width: 60vw;
+    width: 200px;
   }
 
   button{
