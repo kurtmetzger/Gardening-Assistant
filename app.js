@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const db = mongoose.connection;
 const path = require('path');
+const { ObjectId } = require('mongodb');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -41,187 +42,27 @@ function isLoggedIn(req, res, next) {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', async (req, res) => {
-    if (!req.isAuthenticated()) {
-      return res.redirect('login');
-    }
-
-    try{
-      //gets the calendar info for user zone
-      const fullPlantingCalendar = await FullPlantingCalendar.findOne();
-      const fullPlantingData = fullPlantingCalendar.toObject();
-      const zone = req.user.plantingZone;
-  
-      //formats today's date to compare to plant ranges
-      const date = new Date();
-      const formattedDate = `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-  
-  
-      const zoneData = fullPlantingData[zone];
-      res.render('myGarden', { user: req.user, plantingData: zoneData, dateToday: formattedDate });
-    } catch(err) {
-      console.error(err);
-      res.status(500).send('Error loading myGarden page');
-    }
-  });
-
-app.post('/removePlant', async (req, res) => {
-    if (!req.isAuthenticated()) {
-      return res.redirect('login');
-    }
-  
-    const userId = req.user._id;
-    const {id} = req.body;
-  
-    try {
-      await db.collection('users').updateOne(
-        {_id: userId},
-        {$pull: {userGarden: {id: new ObjectId(id)}}}
-      );
-      res.redirect('/');
-    } catch (err) {
-      console.log(id)
-      console.error('Error removing plant:', err);
-      res.status(500).send('Could not remove plant');
-    }
-  });
-
-app.get('/addPlants', async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('login');
-  }
-
-  try{
-    //gets the calendar info for user zone
-    const fullPlantingCalendar = await FullPlantingCalendar.findOne();
-    const fullPlantingData = fullPlantingCalendar.toObject();
-    const zone = req.user.plantingZone;
-    const addedUpcoming = req.query.addedUpcoming;
-    const addedPlanted = req.query.addedPlanted;
-
-    //formats today's date to compare to plant ranges
-    const date = new Date();
-    const formattedDate = `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+//My Garden page
+const myGardenRoutes = require('./routes/myGarden');
+app.use('/', myGardenRoutes);
 
 
-    const zoneData = fullPlantingData[zone];
-    res.render('addPlants', { user: req.user, plantingData: zoneData, dateToday: formattedDate, addedUpcoming: addedUpcoming, addedPlanted: addedPlanted });
-  } catch(err) {
-    console.error(err);
-    res.status(500).send('Error loading full planting dates in route');
-  }
-});
+//add Plants route
+const addPlantsRoutes = require('./routes/addPlants');
+app.use('/', addPlantsRoutes);
 
-app.get('/profileOptions', async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('login');
-  }
+//Profile options route
+const profileOptionsRoutes = require('./routes/profileOptions');
+app.use('/', profileOptionsRoutes);
 
-  try{
-    res.render('profileOptions', {user: req.user});
-  } catch(err) {
-    console.error(err);
-    res.status(500).send('Error loading profile options');
-  }
-});
 
-app.get('/FaQ', async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('login');
-  }
+//FaQ route
+const FaQRoutes = require('./routes/FaQ');
+app.use('/', FaQRoutes);
 
-  try{
-    res.render('FaQ', {user: req.user});
-  } catch(err) {
-    console.error(err);
-    res.status(500).send('Error loading FaQ page');
-  }
-});
 
-app.post('/addToGarden', async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('login');
-  }
 
-  const {name, datePlanted} = req.body;
-  const id = new ObjectId();
-
-  try {
-    await db.collection('users').updateOne(
-      {_id: req.user._id},
-      {$push: {userGarden: {id, name, datePlanted}}}
-    );
-    console.log('Added plant to user garden')
-    res.redirect(`/addPlants?addedPlanted=${encodeURIComponent(name)}`);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Could not add plant to garden");
-  }
-});
-
-app.post('/addToUpcoming', async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('login');
-  }
-
-  const {name, datePlanted} = req.body;
-  const id = new ObjectId();
-
-  try {
-    await db.collection('users').updateOne(
-      {_id: req.user._id},
-      {$push: {userGarden: {id, name, datePlanted}}}
-    );
-    //Send plant name to page to display on success
-    res.redirect(`/addPlants?addedUpcoming=${encodeURIComponent(name)}`);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Could not add plant to Upcoming");
-  }
-});
-
-app.post('/plantFromUpcoming', async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('login');
-  }
-
-  const userId = req.user._id;
-  const {id} = req.body;
-  const today = new Date().toISOString().slice(0, 10);
-
-  try {
-    await db.collection('users').updateOne(
-      { _id: userId, 'userGarden.id': new ObjectId(id), 'userGarden.datePlanted': "0" },
-      { $set: { 'userGarden.$.datePlanted': today } }
-    );
-    res.redirect('/');
-  } catch (err) {
-    console.error('Error updating plant date:', err);
-    res.status(500).send('Could not update plant date');
-  }
-});
-
-app.post('/updatePlantingDate', async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('login');
-  }
-
-  const userId = req.user._id;
-  const {id, datePlanted} = req.body;
-
-  try {
-    await db.collection('users').updateOne(
-      { _id: userId, 'userGarden.id': new ObjectId(id)},
-      { $set: { 'userGarden.$.datePlanted': datePlanted } }
-    );
-    res.redirect('/');
-  } catch (err) {
-    console.error('Error updating plant date:', err);
-    res.status(500).send('Could not update plant date');
-  }
-});
-
-//Adds planting zone to profile from zipcode. Zipcode is not saved
+//Adds planting zone to profile from zipcode. Zipcode is not saved (needs to be seen from multiple pages)
 app.post('/setZone', async (req, res) => {
   const {zipcode} = req.body;
   const userId = req.user._id;
@@ -250,35 +91,9 @@ app.get('/login', (req, res) => {
     res.render('login');
 });
 
-app.post("/tableSortUpdate", async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect("/login");
-  }
 
-  const userId = req.user._id;
-  const { addPlantsSort, UpcomingSort } = req.body;
-
-  try {
-    await User.findByIdAndUpdate(
-      userId,
-      {
-        $set: {addPlantsSort: addPlantsSort || "name", upcomingSort: UpcomingSort || "name"
-        }
-      },
-      {new: true, upsert: true} //If setting doesn't exist in user, create it.
-    );
-
-    res.redirect("/profileOptions");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error saving sorting prefferences");
-  }
-});
-
-
+//Register route
 const registerRoutes = require('./routes/register');
-const { ObjectId } = require('mongodb');
-
 app.use('/', registerRoutes);
 
 app.post('/login', passport.authenticate('local', {
