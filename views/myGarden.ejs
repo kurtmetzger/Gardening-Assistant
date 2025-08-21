@@ -10,32 +10,6 @@
 
     <!--For comparing if today's date is in optimal planting range for a plant-->
   <%
-    //Same code as add plants page, but just grabs items where they are in upcoming
-  let upcomingArray = user.userGarden.filter(plant => plant.datePlanted === "0");
-
-  if (user.upcomingSort === 'date') {
-  //Redefines built in sort method logic by explaining how a and b should be compared.
-    upcomingArray.sort((a, b) => {
-      //Gets date from element a, then date from element b in sorting. Adds '-' if no data exists for spring planting
-      const aDate = plantingData[a.name].plantOutdoorsStart || "-";
-      const bDate = plantingData[b.name].plantOutdoorsStart || "-";
-      // Puts plants without spring planting dates (Garlic) at the bottom because negative results go later
-      if (aDate === "-") return 1;
-      if (bDate === "-") return -1;
-      //Seperates by month and day and converts into comparable numbers
-      const aMonth = Number(aDate.split("-")[0])
-      const aDay = Number(aDate.split("-")[1])
-      const bMonth = Number(bDate.split("-")[0])
-      const bDay = Number(bDate.split("-")[1])
-      //If months are different, return difference. Otherwise, return difference of days
-      if (aMonth !== bMonth) return aMonth - bMonth;
-      return aDay - bDay;
-    });
-  } else{
-    //This one needs to be sorted alphabetically, but the master plants list is automatically
-    upcomingArray.sort((a, b) => a.name.localeCompare(b.name));
-  }
-
     function isDateInRange(today, start, end) {
     if (!start || !end) return false;
     return (start <= end && today >= start && today <= end) ||
@@ -184,14 +158,14 @@
                     <td><%=plantingData[data.name].plantOutdoorsStart%> - <%=plantingData[data.name].plantOutdoorsEnd%></td>
                     <td><%=plantingData[data.name].plantOutdoorsStartFall%> - <%=plantingData[data.name].plantOutdoorsEndFall%></td>
                     <td><%= plantingData[data.name].maturityTime || "—" %></td>
-                    <td class="addPlantsButtonsDesktop" style="display: flex; flex-direction:row;">
+                    <td class="addPlantsButtonsDesktop">
                         <form action="/plantFromUpcoming" method="POST">
                         <input type="hidden" name="id" value="<%= data.id %>">
                         <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
                         <button type="submit" style="<%= inSeason ? 'background-color: #0F433B; color: white;' : '' %>">Plant</button>
                     </form>
                     </td>
-                    <td class="addPlantsButtonsDesktop" style="display: flex; flex-direction:row;">
+                    <td class="addPlantsButtonsDesktop">
                         <form action="/removePlant" method="POST">
                         <input type="hidden" name="id" value="<%= data.id %>">
                         <input type="hidden" name="datePlanted" value="<%= data.datePlanted %>">
