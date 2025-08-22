@@ -13,8 +13,8 @@
     
   <form action="/login" method="POST" class="login-register-form">
     <!--Displays login error messages-->
-    <% if (typeof error !== 'undefined') { %>
-      <div style="background-color: #FFA69E; color: black;"><%= error %></div>
+    <% if (typeof usererror !== 'undefined') { %>
+      <div style="background-color: #FFA69E; color: black;">Invalid username/password</div>
     <% } %>
     <h1>Login</h1>
     <label>Email:</label>

@@ -88,7 +88,9 @@ app.post('/setZone', async (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.render('login');
+    const usererror = req.query.login;
+
+    res.render('login', {usererror: usererror});
 });
 
 
@@ -98,7 +100,7 @@ app.use('/', registerRoutes);
 
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/login',
+    failureRedirect: '/login?login=failure',
   }));
 
 app.get('/logout', (req, res, next) => {
