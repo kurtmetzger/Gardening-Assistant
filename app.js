@@ -61,7 +61,6 @@ const FaQRoutes = require('./routes/FaQ');
 app.use('/', FaQRoutes);
 
 
-
 //Adds planting zone to profile from zipcode. Zipcode is not saved (needs to be seen from multiple pages)
 app.post('/setZone', async (req, res) => {
   const {zipcode} = req.body;
@@ -93,15 +92,15 @@ app.get('/login', (req, res) => {
     res.render('login', {usererror: usererror});
 });
 
-
-//Register route
-const registerRoutes = require('./routes/register');
-app.use('/', registerRoutes);
-
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login?login=failure',
   }));
+
+
+//Register route
+const registerRoutes = require('./routes/register');
+app.use('/', registerRoutes);
 
 app.get('/logout', (req, res, next) => {
   req.logout(err => {
