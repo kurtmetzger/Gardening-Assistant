@@ -33,7 +33,8 @@ router.get('/profileOptions', async (req, res) => {
           $set: {addPlantsSort: addPlantsSort || "name", upcomingSort: UpcomingSort || "name"
           }
         },
-        {new: true, upsert: true} //If setting doesn't exist in user, create it.
+        //If setting doesn't exist in user, create it.
+        {new: true, upsert: true} 
       );
   
       res.redirect("/profileOptions");
