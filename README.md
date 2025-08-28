@@ -5,4 +5,6 @@ This is a web application that assists in managing planting and harvesting dates
 * Adjusting planting dates depending on planting zone of user
 * Allowing users to explore plants and seeds in in season to plant on current day
 
+As of right now, the application is currently deployed on AWS to http://54.198.47.151/
+
 This repo also includes a version of a webscraper I made to get this data used for the project from almanac.com called almanacWebScraper.py, as well as the design artifacts created during the planning stages of this application
