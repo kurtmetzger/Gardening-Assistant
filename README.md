@@ -1,9 +1,31 @@
-# Gardening Assistant
-This is a web application that assists in managing planting and harvesting dates for home gardeners. Some tasks this application assists in include:
-* Allowing users to keep a list of all plants they are planning on growing for the season
-* Keeping track of optimal harvesting and planting dates
-* Adjusting planting dates depending on planting zone of user
-* Allowing users to explore plants and seeds in in season to plant on current day
+🌱 Gardening Assistant (Node.js, MongoDB, AWS, Python)
+
+A full-stack gardening application that helps users track optimal planting and harvesting windows across USDA zones. Includes user authentication, zone-specific planting data, and automated data scraping.
+
+🚀 Features
+
+🌎 USDA zone–based planting calendars
+
+🔐 User authentication & sessions (Passport.js)
+
+🧪 REST API backend with Express
+
+🗄️ MongoDB data models with clean service-layer separation
+
+🤖 Automated planting-date scraper built in Python
+
+☁️ Deployed on AWS EC2 with NGINX reverse proxy
+
+🎨 EJS templated front-end
+
+
+🧱 Tech Stack
+
+Backend: Node.js, Express, MongoDB
+Auth: Passport.js
+Data Pipeline: Python, requests, BeautifulSoup
+Deployment: AWS EC2, PM2, NGINX
+Frontend: EJS + vanilla JS
 
 As of right now, the application is currently deployed on AWS to http://54.198.47.151/
 
