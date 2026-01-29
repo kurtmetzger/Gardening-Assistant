@@ -12,9 +12,9 @@ A full-stack gardening application that helps users track optimal planting and h
 
 🗄️ MongoDB data models with clean service-layer separation
 
-🤖 Automated planting-date scraper built in Python
+🤖 Planting-date scraper built in Python
 
-☁️ Deployed on AWS EC2 with NGINX reverse proxy
+☁️ Deployed on AWS EC2
 
 🎨 EJS templated front-end
 
@@ -24,7 +24,7 @@ A full-stack gardening application that helps users track optimal planting and h
 Backend: Node.js, Express, MongoDB
 Auth: Passport.js
 Data Pipeline: Python, requests, BeautifulSoup
-Deployment: AWS EC2, PM2, NGINX
+Deployment: AWS EC2
 Frontend: EJS + vanilla JS
 
 As of right now, the application is currently deployed on AWS to http://54.198.47.151/
