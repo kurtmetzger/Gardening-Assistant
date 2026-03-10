@@ -27,6 +27,8 @@ Data Pipeline: Python, requests, BeautifulSoup
 Deployment: AWS EC2
 Frontend: EJS + vanilla JS
 
-As of right now, the application is currently deployed on AWS to http://54.198.47.151/
+<!--
+Access is gone because my aws free plan is gone, but this was the old link
+As of right now, the application is currently deployed on AWS to http://54.198.47.151/ -->
 
 This repo also includes a version of a webscraper I made to get this data used for the project from almanac.com called almanacWebScraper.py, as well as the design artifacts created during the planning stages of this application
