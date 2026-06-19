@@ -1,32 +1,47 @@
-🌱 Gardening Assistant (Node.js, MongoDB, AWS, Python)
+# 🌱 Gardening Assistant
 
-A full-stack gardening application that helps users track optimal planting and harvesting windows across USDA zones. Includes user authentication, zone-specific planting data, and automated data scraping.
+This application is meant to be an improvement on the Old Famer's Almanac online planting calendar
 
-🚀 Features
+It was built to solve three main problems.
 
-🌎 USDA zone–based planting calendars
+1. It shows every plant all the time
+Instead of sifting through every plant every time you look at the table, I wanted users to be able to make a smaller table based off of just what they have in their personal garden, to see only the information they need at a glance. These smaller tables can also be used to track upcoming planting, as well as best harvest times for previously planted items. 
 
-🔐 User authentication & sessions (Passport.js)
+2. Plants are only sorted alphabetically
+For me, the more useful sorting would be by the order in which they are planted throughout the year, so it becomes a sequential checklist. User gardens are sorted by their planting date, and items are highlighted when they are in their optimal planting range.
 
-🧪 REST API backend with Express
+3. Filtering options in the larger list
+I wanted users to be able to use the larger list as a guide for buying seeds. With the option to filter out only what is in season, users can easily get a list of what plants in their area would grow successfully if they planted them that day.
 
-🗄️ MongoDB data models with clean service-layer separation
+**Live app:** http://54.87.5.45
 
-🤖 Planting-date scraper built in Python
+---
 
-☁️ Deployed on AWS EC2
+## What it does
 
-🎨 EJS templated front-end
+- Filters 50+ plants down to what's plantable in your zone right now
+- Tracks your personal garden — add plants, see upcoming harvest windows
+- Plan your season by date, not alphabetically
+- Data sourced via a custom Python scraper and cleaned for zone accuracy
 
+## How it's built
 
-🧱 Tech Stack
+- **Backend:** Node.js, Express, MongoDB
+- **Auth:** Passport.js sessions
+- **Data pipeline:** Python, BeautifulSoup — scrapes and structures 
+  planting date data by USDA zone
+- **Frontend:** EJS + vanilla JS
+- **Deployed:** AWS EC2
 
-Backend: Node.js, Express, MongoDB
-Auth: Passport.js
-Data Pipeline: Python, requests, BeautifulSoup
-Deployment: AWS EC2
-Frontend: EJS + vanilla JS
+## What's in this repo
 
-As of right now, the application is currently deployed on AWS to http://54.87.5.45/
+- The full Node.js application
+- `almanacWebScraper.py` — the Python scraper used to collect and 
+  structure planting data from almanac.com
+- Design artifacts from the planning phase
 
-This repo also includes a version of a webscraper I made to get this data used for the project from almanac.com called almanacWebScraper.py, as well as the design artifacts created during the planning stages of this application
+---
+
+Built as a capstone project for an MS in Software Development. 
+The UX decisions came from being an actual gardener who couldn't 
+find a tool that worked the way gardening actually works.
