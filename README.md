@@ -13,7 +13,7 @@ For me, the more useful sorting would be by the order in which they are planted 
 3. Filtering options in the larger list
 I wanted users to be able to use the larger list as a guide for buying seeds. With the option to filter out only what is in season, users can easily get a list of what plants in their area would grow successfully if they planted them that day.
 
-**Live app:** http://54.87.5.45
+**Live app:** http://54.83.143.122/
 
 ---
 
